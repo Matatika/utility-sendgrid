@@ -5,7 +5,7 @@ with open("requirements.txt") as f:
 
 setup(
     name="matatika_sendgrid_cli",
-    version="0.1.0",
+    version="0.2.0",
     description="A Python CLI for sending emails with sendgrid.",
     author="DanielPDWalker",
     url="https://www.matatika.com/",
