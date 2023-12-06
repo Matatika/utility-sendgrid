@@ -7,6 +7,7 @@ import click
 import sendgrid
 from sendgrid.helpers.mail import Mail, Email, To, Content, Attachment
 from python_http_client import HTTPError
+from pathlib import Path
 
 
 def add_attachments(mail, attachments):
@@ -20,7 +21,15 @@ def add_attachments(mail, attachments):
         mail.add_attachment(attachment)
 
 
-def send_email(to_addresses, from_address, title, body, attachments, api_key):
+def send_email(to_addresses, from_address, title, body, attachments, api_key, content_type):
+
+    try:
+        body_file_path = Path(body)
+        if body_file_path.exists():
+            with open(body_file_path, 'r') as file:
+                body = file.read()
+    except:
+        pass
 
     sg = sendgrid.SendGridAPIClient(api_key=api_key)
 
@@ -29,7 +38,7 @@ def send_email(to_addresses, from_address, title, body, attachments, api_key):
             Email(from_address),
             To(address),
             title,
-            Content("text/plain", body),
+            Content(content_type or "text/plain", body),
         )
 
         if attachments:

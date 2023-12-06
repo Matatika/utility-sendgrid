@@ -43,7 +43,13 @@ from sendgrid_cli.utils import check_api_key, split_into_list
     help="Your sendgrid API key.",
     default=os.getenv("SENDGRID_API_KEY"),
 )
-def sendgrid_cli(to_addresses, from_address, title, body, attachments, api_key):
+@click.option(
+    "--content_type",
+    "content_type",
+    type=click.STRING,
+    default=os.getenv("SENDGRID_CONTENT_TYPE"),
+)
+def sendgrid_cli(to_addresses, from_address, title, body, attachments, api_key, content_type):
     """CLI entrypoint and base command"""
 
     check_api_key(api_key)
@@ -52,4 +58,4 @@ def sendgrid_cli(to_addresses, from_address, title, body, attachments, api_key):
 
     attachments = split_into_list(attachments)
 
-    send_email(to_addresses, from_address, title, body, attachments, api_key)
+    send_email(to_addresses, from_address, title, body, attachments, api_key, content_type)
